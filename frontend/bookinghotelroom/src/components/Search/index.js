@@ -3,6 +3,7 @@ import * as api from '../../network/api'
 import { Row, Col, Form, Container } from 'react-bootstrap'
 import Hotel from '../Hotels/Hotel'
 import { SelectedHotelContext } from '../SelectedHotelContext'
+import { validate } from '../validate'
 
 
 
@@ -48,40 +49,10 @@ export const Search = (props) => {
     //form submission handler
     const handleSubmit = (e) => {
         e.preventDefault()
-        setFormErrors(validate(formValues))
+        setFormErrors(validate(formValues, 1000,false))
         setIsSubmitting(true)
     }
 
-    //form validation handler
-    const validate = (values) => {
-        let errors = {}
-        var isNumbers = /^[0-9]+$/;
-        if (!values.city) {
-            errors.city = "City is required"
-        }
-
-        if (!values.number_of_rooms) {  
-            errors.number_of_rooms = "number_of_rooms is required"
-        } else if (!isNumbers.test(values.number_of_rooms)) {
-            errors.number_of_rooms = 'Please type number of rooms in digits';
-        }
-
-        if (!values.arrival) {
-            errors.arrival = "arrival date is required"
-        }
-
-        if (!values.departure) {
-            errors.departure = "departure date is required"
-        }
-
-        if (!values.maxPrice) {
-            errors.maxPrice = "maxPrice is Required"
-        } else if (!isNumbers.test(values.maxPrice)) {
-            errors.maxPrice = 'Please type price in number';
-        }
-
-        return errors
-    }
     //validates the form and than submit
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmitting) {
@@ -93,7 +64,7 @@ export const Search = (props) => {
         <>
             {/* form */}
             {Object.keys(formErrors).length === 0 && isSubmitting && (
-                <span className="success-msg ml-auto mr-auto text-center">Form submitted successfully</span>
+                <div  className="success-msg alert alert-success ml-2 mr-auto text-center">Form submitted successfully</div>
             )}
             <form className="mt-5" onSubmit={handleSubmit} noValidate>
                <Container>

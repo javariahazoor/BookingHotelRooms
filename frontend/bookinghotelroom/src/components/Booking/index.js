@@ -3,6 +3,7 @@ import * as api from '../../network/api'
 import movieIcon from '../../assets/img/hotel-large-icon.png'
 import { Row, Col, Form, Container, Button } from 'react-bootstrap'
 import { SelectedHotelContext } from '../SelectedHotelContext';
+import { validate } from '../validate'
 
 
 
@@ -41,16 +42,14 @@ function Booking(props) {
     //form submission handler
     const handleSubmit = (e) => {
         e.preventDefault()
-        setFormErrors(validate(formValues))
+        setFormErrors(validate(formValues, maxRoomsAvailable,true))
         setIsSubmitting(true)
     }
 
     //form validation handler
-    const validate = (values) => {
+   /*  const validate = (values) => {
         let errors = {}
         var isNumbers = /^[0-9]+$/;
-       
-
         if (!values.number_of_rooms) {
             errors.number_of_rooms = "number_of_rooms is required"
         } else if (!isNumbers.test(values.number_of_rooms)) {
@@ -58,24 +57,27 @@ function Booking(props) {
         } else if (values.number_of_rooms > maxRoomsAvailable){
             errors.number_of_rooms = 'Please enter number of rooms less than equal to available rooms'
         }
-
         if (!values.arrival) {
             errors.arrival = "Arrival date is required"
+        } else if (values.arrival > values.departure) {
+            errors.arrival = "Arrival date should be less than departure date"
         }
 
         if (!values.departure) {
             errors.departure = "Departure date is required"
+        } else if (values.departure < values.departure) {
+            errors.arrival = "Arrival date should be less than departure date"
         }
 
        
         return errors
-    }
+    } */
 
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmitting) {
             submit()
         }
-    }, [formErrors])
+    }, [formErrors, isSubmitting])
 
     
     return (
@@ -116,7 +118,7 @@ function Booking(props) {
                         </Col>
                     </Row>
                     {Object.keys(formErrors).length === 0 && isSubmitting && (
-                        <span className="success-msg">Form submitted successfully</span>
+                        <div className="success-msg alert alert-success ml-2 mr-4 text-center">Booking done successfully</div>
                     )}
                     <form className="mt-5" onSubmit={handleSubmit} noValidate>
                         <Container>

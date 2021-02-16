@@ -1,8 +1,9 @@
 import React, { useContext, useState, useMemo} from 'react';
-import { Route } from 'react-router-dom'
+import { Route, Switch} from 'react-router-dom'
 import Search from '../components/Search'
 import Booking from '../components/Booking'
 import { SelectedHotelContext } from './SelectedHotelContext';
+import { NotFound } from './NotFound';
 
 export const Main = () => {
     const [selectedHotel, setSelectedHotel] = useState(null)
@@ -17,15 +18,13 @@ export const Main = () => {
     return (
         <>
             <SelectedHotelContext.Provider value={value}>
-                <Route path="/" exact component={Search} />
-                <Route path="/booking/" exact component={Booking} /> 
+                <Switch>
+                    <Route path="/" exact component={Search} />
+                    <Route path="/booking/" exact component={Booking} /> 
+                    <Route path="*" component={NotFound} /> 
+                </Switch>
             </SelectedHotelContext.Provider>
-            
-            {/* <Route path="/" exact component={Search} />
-            <Route path="/result/:search" exact component={Result} />
-            <Route path={popular.path} exact component={PopularMovies} />
-            <Route path={upcoming.path} exact component={UpcomingMovies} />
-            <Route path="/movie/:id" exact component={MovieDetail} /> */}
+         
         </>
     )
 }
